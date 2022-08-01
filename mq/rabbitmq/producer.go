@@ -47,7 +47,7 @@ func NewProducer(url string, exchangeName string, routingKey string, opts ...Opt
 	if o.heartbeat == 0 {
 		o.heartbeat = 10 * time.Second
 	}
-	p := &producer{url: url, opt: o}
+	p := &producer{url: url, exchangeName: exchangeName, routingKey: routingKey, opt: o}
 	if o.tracer {
 		p.tracing = NewTracing(
 			WithType("producer"),
