@@ -44,6 +44,7 @@ type Basic interface {
 
 	HSet(ctx context.Context, key string, values ...interface{}) (int64, error)
 	HGet(ctx context.Context, key, field string) (string, error)
+	HDel(ctx context.Context, key, field string) error
 	HGetAll(ctx context.Context, key string) (map[string]string, error)
 	HIncrBy(ctx context.Context, key, field string, incr int64) (int64, error)
 }
@@ -119,6 +120,14 @@ func (r *basicRedis) HGet(ctx context.Context, key, field string) (string, error
 		return v, nil
 	}
 	return v, err
+}
+
+func (r *basicRedis) HDel(ctx context.Context, key, field string) error {
+	err := r.Client.HDel(ctx, key, field).Err()
+	if err == red.Nil {
+		return nil
+	}
+	return err
 }
 
 func (r *basicRedis) HGetAll(ctx context.Context, key string) (map[string]string, error) {
